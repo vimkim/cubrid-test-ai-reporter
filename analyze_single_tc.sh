@@ -37,7 +37,7 @@ fi
 EXPECTED_OUTPUT=$(cat "$ANSWER_FILE")
 ACTUAL_OUTPUT=$(cat "$RESULT_FILE")
 SQL_CONTENT=$(cat "$SQL_FILE")
-DIFF_OUTPUT=$(diff "$ANSWER_FILE" "$RESULT_FILE" || true)
+DIFF_OUTPUT=$(diff -u "$ANSWER_FILE" "$RESULT_FILE" || true)
 
 echo "=== Diff (answer vs result) ==="
 echo "$DIFF_OUTPUT"
