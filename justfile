@@ -24,7 +24,7 @@ clone:
 
 # Full pipeline: fetch failed TCs from PR, then clone them from source dir
 # Usage: just run pr=https://github.com/CUBRID/cubrid/pull/6904 src=/path/to/cubrid/sql
-run:
+run-fetch-clone:
     @test -n "{{pr}}"  || (echo "Error: pr= is required"  && exit 1)
     @test -n "{{src}}" || (echo "Error: src= is required" && exit 1)
     just fetch pr={{pr}} list={{list}}
