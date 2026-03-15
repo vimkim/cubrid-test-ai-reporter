@@ -80,6 +80,14 @@ def copy_tc(tc_file: Path, source_root: Path, dest_root: Path) -> None:
     dest_file.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(tc_file, dest_file)
 
+    # Also copy the corresponding answer file from the sibling answers/ directory
+    answers_dir = tc_file.parent.parent / "answers"
+    answer_file = answers_dir / (tc_file.stem + ".answer")
+    if answer_file.is_file():
+        dest_answer = dest_root / answer_file.relative_to(source_root)
+        dest_answer.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(answer_file, dest_answer)
+
 
 def main():
     args = parse_args()
