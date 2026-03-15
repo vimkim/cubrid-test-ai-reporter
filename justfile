@@ -34,3 +34,6 @@ run:
 clean:
     rm -f {{list}}
     rm -rf {{dest}}
+
+run-ctp-sql:
+  ctp.sh sql -c ./example-sql.conf
