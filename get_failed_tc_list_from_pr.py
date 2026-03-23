@@ -169,6 +169,10 @@ def main():
 
     failed = get_failed_tests(project_slug, job_number)
 
+    # Strip CI prefix (e.g. "linux_sql_64bit_release/cubrid-testcases/")
+    prefix_re = re.compile(r"^[^/]+/cubrid-testcases/")
+    failed = [prefix_re.sub("", tc) for tc in failed]
+
     if not failed:
         print("[*] No failed test cases found.", file=sys.stderr)
     else:
