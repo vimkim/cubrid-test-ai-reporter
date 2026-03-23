@@ -11,3 +11,4 @@ failed_tc_list.txt
 
 # Virtual environments
 .venv
+.omc

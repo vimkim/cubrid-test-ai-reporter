@@ -38,26 +38,43 @@ just fetch pr=https://github.com/CUBRID/cubrid/pull/1234
 just clone src=/other/path/cubrid-testcases
 ```
 
+## Installation
+
+Install `get-failed-tc` as a global command:
+
+```sh
+just install
+```
+
+This runs `uv tool install -e .` so the command is available anywhere:
+
+```sh
+get-failed-tc https://github.com/CUBRID/cubrid/pull/6904
+```
+
 ## Tools
 
-### `get_failed_tc_list_from_pr.py`
+### `get-failed-tc` (CLI) / `get_failed_tc_list_from_pr.py`
 
 Fetches the list of failed test cases from a PR's latest CircleCI `test_sql` job.
 
 ```sh
-uv run get_failed_tc_list_from_pr.py <github-pr-url>
+get-failed-tc <github-pr-url>
+# or without installing:
+uv run get-failed-tc <github-pr-url>
 ```
 
 **Flow:**
 1. Resolves the PR's head commit via GitHub API
 2. Finds the CircleCI `test_sql` job from commit statuses / check-runs
 3. Calls the CircleCI API v2 test metadata endpoint
-4. Prints failed test case paths to stdout (one per line)
+4. Strips the CI prefix (`linux_sql_64bit_release/cubrid-testcases/`)
+5. Prints failed test case paths to stdout (one per line)
 
 **Output format:**
 ```
-linux_sql_64bit_release/cubrid-testcases/sql/_01_object/_02_class/_003_auto_increment/cases/1002.sql
-linux_sql_64bit_release/cubrid-testcases/sql/_01_object/_02_class/_003_auto_increment/cases/1005.sql
+sql/_01_object/_02_class/_003_auto_increment/cases/1002.sql
+sql/_01_object/_02_class/_003_auto_increment/cases/1005.sql
 ...
 ```
 
@@ -79,6 +96,7 @@ uv run clone_failed_tc.py -l failed_tc_list.txt -s <source_dir> -d <dest_dir>
 
 | Recipe | Description |
 |--------|-------------|
+| `just install` | Install `get-failed-tc` as a global command |
 | `just fetch [pr=<url>]` | Fetch failed TC list → `failed_tc_list.txt` |
 | `just clone [src=<dir>]` | Copy TCs from source dir → `./failed_tcs` |
 | `just run-fetch-clone [pr=<url>] [src=<dir>]` | Full pipeline (fetch + clone) |

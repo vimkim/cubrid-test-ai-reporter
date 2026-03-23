@@ -10,11 +10,15 @@ list  := "failed_tc_list.txt"
 default:
     @just --list
 
+# Install get-failed-tc as a global command
+install:
+    uv tool install -e . --force
+
 # Fetch failed TC list from a PR and save to failed_tc_list.txt
 # Usage: just fetch pr=https://github.com/CUBRID/cubrid/pull/6904
 fetch:
     @test -n "{{pr}}" || (echo "Error: pr= is required. Usage: just fetch pr=<url>" && exit 1)
-    uv run get_failed_tc_list_from_pr.py {{pr}} | tee {{list}}
+    uv run get-failed-tc {{pr}} | tee {{list}}
 
 # Copy failed TCs from source dir to dest dir
 # Usage: just clone src=/path/to/cubrid/sql
@@ -27,7 +31,7 @@ clone:
 run-fetch-clone:
     @test -n "{{pr}}"  || (echo "Error: pr= is required"  && exit 1)
     @test -n "{{src}}" || (echo "Error: src= is required" && exit 1)
-    uv run get_failed_tc_list_from_pr.py {{pr}} | tee {{list}}
+    uv run get-failed-tc {{pr}} | tee {{list}}
     uv run clone_failed_tc.py -l {{list}} -s {{src}} -d {{dest}}
 
 # Remove generated output files

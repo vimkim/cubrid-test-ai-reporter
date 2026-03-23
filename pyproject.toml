@@ -7,3 +7,9 @@ requires-python = ">=3.14"
 dependencies = [
     "requests>=2.32",
 ]
+
+[tool.setuptools.packages.find]
+include = ["test_sql_autoreport*"]
+
+[project.scripts]
+get-failed-tc = "test_sql_autoreport.get_failed_tc_list_from_pr:main"
